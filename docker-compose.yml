@@ -1,0 +1,22 @@
+version: "2"
+volumes:
+  settings:
+  cookies:
+  cups:
+services:
+  kiosk:
+    restart: always
+    build: ./kiosk
+    labels:
+      io.balena.features.kernel-modules: "1"
+      io.balena.features.firmware: "1"
+      io.balena.features.dbus: "1"
+      io.balena.features.supervisor-api: "1"
+      io.balena.features.balena-api: "1"
+    privileged: true
+    environment:
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
+    ports:
+      - 8080:8080
+    volumes:
+      - "settings:/usr/src/app/settings"
